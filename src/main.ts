@@ -1,5 +1,6 @@
 import { Controller, Get, Module } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { UserModule } from './users/user.module';
 
 @Controller()
 class AppController {
@@ -19,6 +20,7 @@ class AboutController {
 
 @Module({
   controllers: [AppController, AboutController],
+  imports: [UserModule],
 })
 class AppModule {}
 
