@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Query,
+} from '@nestjs/common';
+import { CreatePostDto } from './dtos/create-post.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -8,12 +17,15 @@ export class PostsController {
   }
 
   @Get(':id')
-  getSinglePost(@Param('id') id: string, @Query('name') name: string) {
+  getSinglePost(
+    @Param('id', ParseIntPipe) id: string,
+    @Query('name') name: string,
+  ) {
     return 'get a single post with id ' + id + ' and name of ' + name;
   }
 
   @Post()
-  createPost(@Body() body: any) {
+  createPost(@Body() body: CreatePostDto) {
     console.log(body);
     return 'create post';
   }
