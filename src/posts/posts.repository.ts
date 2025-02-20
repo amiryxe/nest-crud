@@ -1,6 +1,7 @@
 import { readFile, writeFile } from 'fs/promises';
 
 import { CreatePostDto } from './dtos/create-post.dto';
+import { NotFoundException } from '@nestjs/common';
 
 export class PostRepository {
   async findAll() {
@@ -14,7 +15,13 @@ export class PostRepository {
     const content = await readFile('sample-db.json', 'utf-8');
     const posts = JSON.parse(content);
 
-    return posts.find((post) => post.id === id);
+    const post = posts.find((post) => post.id === id);
+
+    if (!post) {
+      throw new NotFoundException(`Post with id ${id} not found!`);
+    }
+
+    return post;
   }
 
   async create(post: CreatePostDto) {
