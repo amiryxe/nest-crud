@@ -8,25 +8,31 @@ import {
   Query,
 } from '@nestjs/common';
 import { CreatePostDto } from './dtos/create-post.dto';
+import { PostRepository } from './posts.repository';
 
 @Controller('posts')
 export class PostsController {
+  postRepo: PostRepository;
+
+  constructor() {
+    this.postRepo = new PostRepository();
+  }
+
   @Get()
   getPosts() {
-    return 'list of posts';
+    return this.postRepo.findAll();
   }
 
   @Get(':id')
   getSinglePost(
-    @Param('id', ParseIntPipe) id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Query('name') name: string,
   ) {
-    return 'get a single post with id ' + id + ' and name of ' + name;
+    return this.postRepo.findOne(id);
   }
 
   @Post()
   createPost(@Body() body: CreatePostDto) {
-    console.log(body);
-    return 'create post';
+    return this.postRepo.create(body);
   }
 }
