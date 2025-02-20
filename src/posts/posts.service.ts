@@ -1,9 +1,10 @@
 import { readFile, writeFile } from 'fs/promises';
 
 import { CreatePostDto } from './dtos/create-post.dto';
-import { NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
-export class PostRepository {
+@Injectable()
+export class PostService {
   async findAll() {
     const content = await readFile('sample-db.json', 'utf-8');
     const posts = JSON.parse(content);

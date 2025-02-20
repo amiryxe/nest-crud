@@ -8,19 +8,15 @@ import {
   Query,
 } from '@nestjs/common';
 import { CreatePostDto } from './dtos/create-post.dto';
-import { PostRepository } from './posts.repository';
+import { PostService } from './posts.service';
 
 @Controller('posts')
 export class PostsController {
-  postRepo: PostRepository;
-
-  constructor() {
-    this.postRepo = new PostRepository();
-  }
+  constructor(private readonly posts: PostService) {}
 
   @Get()
   getPosts() {
-    return this.postRepo.findAll();
+    return this.posts.findAll();
   }
 
   @Get(':id')
@@ -28,11 +24,11 @@ export class PostsController {
     @Param('id', ParseIntPipe) id: number,
     @Query('name') name: string,
   ) {
-    return this.postRepo.findOne(id);
+    return this.posts.findOne(id);
   }
 
   @Post()
   createPost(@Body() body: CreatePostDto) {
-    return this.postRepo.create(body);
+    return this.posts.create(body);
   }
 }
